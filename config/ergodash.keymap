@@ -53,16 +53,21 @@
 };
 
 / {
+    /*
+     * Usuwamy zmk,matrix-transform z chosen, które shield ergodash dziedziczy
+     * z upstream. Bez tego ZMK Studio nie wykryłby naszego physical-layout.
+     */
+    chosen {
+        /delete-property/ zmk,matrix-transform;
+        zmk,backlight = &backlight;
+        zmk,physical-layout = &ergodash_physical_layout;
+    };
+
     backlight: pwmleds {
         compatible = "pwm-leds";
         pwm_led_0 {
             pwms = <&pwm0 0 10000 PWM_POLARITY_NORMAL>;
         };
-    };
-
-    chosen {
-        zmk,backlight = &backlight;
-        zmk,physical-layout = &ergodash_physical_layout;
     };
 
     /*
