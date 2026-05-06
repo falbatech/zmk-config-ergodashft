@@ -260,11 +260,11 @@
  * .----------------------------------------------------------------------------------------------------------------------.
  */
             bindings = <
-&trans  &trans          &trans          &trans          &trans  &trans  &none                            &none   &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &bl BL_TOG      &bl BL_INC      &bl BL_DEC      &trans  &trans  &none                            &none   &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &studio_unlock  &trans          &trans          &trans  &trans  &none                            &none   &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &out OUT_TOG    &out OUT_BLE    &out OUT_USB    &trans  &trans  &none                            &none   &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &none           &trans          &trans          &trans  &trans  &trans                           &trans  &trans  &trans  &none   &trans  &trans  &trans
+&studio_unlock  &trans        &trans          &trans          &trans  &trans  &none                            &none   &trans  &trans  &trans  &trans  &trans  &trans
+&trans          &bl BL_TOG    &bl BL_INC      &bl BL_DEC      &trans  &trans  &none                            &none   &trans  &trans  &trans  &trans  &trans  &trans
+&trans          &trans        &trans          &trans          &trans  &trans  &none                            &none   &trans  &trans  &trans  &trans  &trans  &trans
+&trans          &out OUT_TOG  &out OUT_BLE    &out OUT_USB    &trans  &trans  &none                            &none   &trans  &trans  &trans  &trans  &trans  &trans
+&trans          &none         &trans          &trans          &trans  &trans  &trans                           &trans  &trans  &trans  &none   &trans  &trans  &trans
             >;
         };
     };
