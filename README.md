@@ -1,68 +1,142 @@
-# zmk-config-ergodashft
+:::writing{variant=“standard” id=“52731”}
 
-Konfiguracja ZMK dla ErgoDash FT - klasyczny układ ErgoDash z backlight LED i ZMK Studio.
+zmk-config-ergodashft
 
-## Hardware
+PL
 
-- Shield: `ergodash` (oficjalny shield z upstream ZMK)
-- Kontrolery: 2× nice!nano v2
-- Wyświetlacze: 2× nice!view (po jednym na każdej połówce)
-- Podświetlenie: 70 LED 3mm jednokolorowych (35 per strona) sterowanych MOSFET-em na pinie **D10 / P0.09** (PWM, regulacja jasności)
+Konfiguracja ZMK dla ErgoDash FT - klawiatura ergonomiczna FalbaTech.
 
-## Warstwy
+Hardware
+	•	Shield: ergodash (custom physical layout w naszym repo)
+	•	Kontrolery: 2× nice!nano v2
+	•	Wyświetlacz: nice!view (Sharp Memory LCD)
+	•	Backlight: pojedyncza LED 3mm na PWM (D10/P0.09 przez MOSFET, kanał PWM0)
+	•	70 klawiszy (5 rzędów × 7 kolumn + 5 thumb na stronę, column-staggered)
 
-| # | Nazwa | Aktywacja | Funkcja |
-|---|-------|-----------|---------|
-| 0 | DEFAULT (QWERTY) | bazowa | Klasyczny ErgoDash |
-| 1 | LOWER | lewy thumb | F1-F12, BT, bootloader |
-| 2 | RAISE | prawy thumb | Symbole, strzałki, HOME/END/PGUP/PGDN |
-| 3 | ADJ | LOWER + RAISE jednocześnie | studio_unlock, backlight, output toggle |
+Warstwy
 
-## Backlight
+#	Nazwa	Funkcja
+0	default_layer	QWERTY base
+1	lower_layer	Cyfry, F-keys, nawigacja
+2	raise_layer	Symbole, brackets
+3	adj_layer	System, backlight controls, BT controls
 
-Sterowanie backlight w warstwie **ADJ** (LOWER + RAISE):
-- `BL_TOG` (Q) - włącz/wyłącz
-- `BL_INC` (W) - jaśniej
-- `BL_DEC` (E) - ciemniej
+ZMK Studio
 
-Domyślnie wyłączony po starcie - musisz włączyć `BL_TOG` ręcznie. Ustawienie zostaje zapisane w pamięci.
+Aktywne. Procedura odblokowania (jednakowa we wszystkich klawiaturach FalbaTech FT):
 
-## ZMK Studio
+Trzymaj oba thumby aktywujące warstwy systemowe → wciśnij skrajny lewy górny klawisz.
 
-Aktywne. Lewa połówka ma snippet `studio-rpc-usb-uart` w `build.yaml`.
+Po odblokowaniu klawiatura jest edytowalna z:
+zmk.studio￼
 
-**Aby odblokować:** trzymaj LOWER + RAISE (oba kciuki) → wejdziesz w ADJ → naciśnij `A` (studio_unlock). W ZMK Studio na stronie https://zmk.studio kliknij Connect → wybierz port USB → keymap się odblokuje.
+Bluetooth - obsługa 5 urządzeń
 
-## Build
+Klawiatura obsługuje 5 niezależnych profili Bluetooth. W warstwie systemowej (adj_layer):
 
-GitHub Actions buduje 3 firmware automatycznie po każdym pushu:
-- `ergodash_left-nice_nano-zmk.uf2`
-- `ergodash_right-nice_nano-zmk.uf2`
-- `settings_reset-nice_nano-zmk.uf2`
+Klawisz	Funkcja
+Z	Profil BT 0
+X	Profil BT 1
+C	Profil BT 2
+V	Profil BT 3
+B	Profil BT 4
+N	Wyczyść aktywny profil
+M	Wyczyść wszystkie profile
+,	Tryb USB
+.	Tryb Bluetooth
 
-Pobierasz z Actions → ostatni run → Artifacts → firmware.
+Backlight controls (warstwa adj_layer)
 
-## Flashowanie
+Klawisz	Funkcja
+S	Backlight on/off
+D	Brightness +
+F	Brightness -
 
-1. Lewa połówka USB → 2× reset → `NICENANO` pendrive → przeciągnij `ergodash_left-...uf2`
-2. Prawa połówka USB → 2× reset → `NICENANO` → `ergodash_right-...uf2`
-3. Połącz TRRS → podłącz lewą do USB → klawiatura "ErgoDash FT" pojawi się w BT
+Backlight wykorzystuje pojedynczą LED 3mm zasilaną przez PWM przez MOSFET. Bardziej energooszczędne niż per-key RGB, świetne na nocną pracę.
 
-Jeśli połówki się nie łączą: `settings_reset` na obie, potem znów lewa+prawa.
+Build
 
-## Zmiana pinu backlight
+GitHub Actions buduje 3 firmware:
+	•	ergodash_left-nice_nano-zmk.uf2
+	•	ergodash_right-nice_nano-zmk.uf2
+	•	settings_reset-nice_nano-zmk.uf2
 
-Backlight jest na pinie D10 (P0.09). Jeśli przeniesiesz tranzystor na inny pin, edytuj `config/ergodash.keymap`:
+Flashowanie
+	1.	Lewa USB - 2× reset - ergodash_left-...uf2
+	2.	Prawa USB - 2× reset - ergodash_right-...uf2
+	3.	Połącz TRRS - klawiatura “ErgoDash FT” w BT
 
-```dts
-&pinctrl {
-    pwm0_default: pwm0_default {
-        group1 {
-            psels = <NRF_PSEL(PWM_OUT0, X, Y)>;  // X=port, Y=numer pinu
-        };
-    };
-    ...
-};
-```
+Wsparcie
 
-Mapowanie nice!nano: D5=P0.24, D9=P1.06, D10=P0.09, D0=P0.08.
+FalbaTech - https://falbatech.click
+
+⸻
+
+EN
+
+ZMK configuration for ErgoDash FT - ergonomic FalbaTech keyboard.
+
+Hardware
+	•	Shield: ergodash (custom physical layout in our repository)
+	•	Controllers: 2× nice!nano v2
+	•	Display: nice!view (Sharp Memory LCD)
+	•	Backlight: single 3mm LED on PWM (D10/P0.09 through MOSFET, PWM0 channel)
+	•	70 keys (5 rows × 7 columns + 5 thumb keys per side, column-staggered)
+
+Layers
+
+#	Name	Function
+0	default_layer	QWERTY base
+1	lower_layer	Numbers, F-keys, navigation
+2	raise_layer	Symbols, brackets
+3	adj_layer	System, backlight controls, BT controls
+
+ZMK Studio
+
+Enabled. Unlock procedure (same across all FalbaTech FT keyboards):
+
+Hold both thumb keys activating system layers → press the top left key.
+
+After unlocking, the keyboard can be configured from:
+zmk.studio￼
+
+Bluetooth - 5 device support
+
+The keyboard supports 5 independent Bluetooth profiles. In the system layer (adj_layer):
+
+Key	Function
+Z	BT Profile 0
+X	BT Profile 1
+C	BT Profile 2
+V	BT Profile 3
+B	BT Profile 4
+N	Clear active profile
+M	Clear all profiles
+,	USB mode
+.	Bluetooth mode
+
+Backlight controls (adj_layer)
+
+Key	Function
+S	Backlight on/off
+D	Brightness +
+F	Brightness -
+
+The backlight uses a single 3mm LED powered by PWM through a MOSFET. More power efficient than per-key RGB and excellent for night work.
+
+Build
+
+GitHub Actions builds 3 firmware files:
+	•	ergodash_left-nice_nano-zmk.uf2
+	•	ergodash_right-nice_nano-zmk.uf2
+	•	settings_reset-nice_nano-zmk.uf2
+
+Flashing
+	1.	Left USB - press reset 2× - ergodash_left-...uf2
+	2.	Right USB - press reset 2× - ergodash_right-...uf2
+	3.	Connect TRRS - keyboard appears as “ErgoDash FT” over Bluetooth
+
+Support
+
+FalbaTech - https://falbatech.click
+:::
